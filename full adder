@@ -1,0 +1,35 @@
+// design.sv
+module full_adder(input A, B, Cin, output Sum, Cout);
+  wire w1, w2, w3;
+  xor x1(w1, A, B);
+  xor x2(Sum, w1, Cin);
+  and a1(w2, A, B);
+  and a2(w3, w1, Cin);
+  or o1(Cout, w2, w3);
+endmodule
+
+// testbench.sv
+module tb;
+  reg a, b, cin;
+  wire sum, cout;
+  
+  full_adder uut(.A(a), .B(b), .Cin(cin), .Sum(sum), .Cout(cout));
+  
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    a=0; b=0; cin=0; #10;
+    a=0; b=0; cin=1; #10;
+    a=0; b=1; cin=0; #10;
+    a=0; b=1; cin=1; #10;
+    a=1; b=0; cin=0; #10;
+    a=1; b=0; cin=1; #10;
+    a=1; b=1; cin=0; #10;
+    a=1; b=1; cin=1; #10;
+    $finish;
+  end
+  
+  initial begin
+    $monitor("a=%b b=%b cin=%b sum=%b cout=%b", a, b, cin, sum, cout);
+  end
+endmodule
