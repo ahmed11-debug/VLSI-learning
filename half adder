@@ -3,3 +3,25 @@ module half_adder(input a, b, output s, c);
   xor x1(s, a, b);
   and a1(c, a, b);
 endmodule
+
+// testbench.sv
+module tb;
+  reg a, b;
+  wire s, c;
+  
+  half_adder uut(.a(a), .b(b), .s(s), .c(c));
+  
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    a=0; b=0; #10;
+    a=0; b=1; #10;
+    a=1; b=0; #10;
+    a=1; b=1; #10;
+    $finish;
+  end
+  
+  initial begin
+    $monitor("a=%b b=%b s=%b c=%b", a, b, s, c);
+  end
+endmodule
