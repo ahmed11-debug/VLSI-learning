@@ -1,0 +1,29 @@
+// design.sv
+module half_subtractor(input a, b, output diff, borrow);
+  wire w1;
+  xor x1(diff, a, b);
+  not n1(w1, a);
+  and a1(borrow, w1, b);
+endmodule
+
+// testbench.sv
+module tb;
+  reg a, b;
+  wire diff, borrow;
+  
+  half_subtractor uut(.a(a), .b(b), .diff(diff), .borrow(borrow));
+  
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    a=0; b=0; #10;
+    a=0; b=1; #10;
+    a=1; b=0; #10;
+    a=1; b=1; #10;
+    $finish;
+  end
+  
+  initial begin
+    $monitor("a=%b b=%b diff=%b borrow=%b", a, b, diff, borrow);
+  end
+endmodule
