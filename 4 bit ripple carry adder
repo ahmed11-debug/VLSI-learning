@@ -1,0 +1,41 @@
+// design.sv
+module full_adder(input A, B, Cin, output Sum, Cout);
+  wire w1, w2, w3;
+  xor x1(w1, A, B);
+  xor x2(Sum, w1, Cin);
+  and a1(w2, A, B);
+  and a2(w3, w1, Cin);
+  or o1(Cout, w2, w3);
+endmodule
+
+module ripple_carry_adder(input [3:0] a, b, input cin, output [3:0] sum, output cout);
+  wire w1, w2, w3;
+  
+  full_adder fa1(.A(a[0]), .B(b[0]), .Cin(cin), .Sum(sum[0]), .Cout(w1));
+  full_adder fa2(.A(a[1]), .B(b[1]), .Cin(w1), .Sum(sum[1]), .Cout(w2));
+  full_adder fa3(.A(a[2]), .B(b[2]), .Cin(w2), .Sum(sum[2]), .Cout(w3));
+  full_adder fa4(.A(a[3]), .B(b[3]), .Cin(w3), .Sum(sum[3]), .Cout(cout));
+endmodule
+
+// testbench.sv
+module tb;
+  reg [3:0] a, b;
+  reg cin;
+  wire [3:0] sum;
+  wire cout;
+  
+  ripple_carry_adder uut(.a(a), .b(b), .cin(cin), .sum(sum), .cout(cout));
+  
+  initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    a=4'b0001; b=4'b0001; cin=0; #10;
+    a=4'b0011; b=4'b0101; cin=0; #10;
+    a=4'b1111; b=4'b0001; cin=0; #10;
+    $finish;
+  end
+  
+  initial begin
+    $monitor("a=%b b=%b cin=%b sum=%b cout=%b", a, b, cin, sum, cout);
+  end
+endmodule
