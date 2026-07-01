@@ -1,0 +1,67 @@
+// Code your design here
+module two_bitadder(input[1:0]a,b,output gt,lt,et);
+  
+  wire[11:0]w;
+  not n1(w[0],a[1]);
+  not n2(w[1],a[0]);
+  not n3(w[2],b[0]);
+  not n4(w[3],b[1]);
+  
+  and a1(w[4],a[0],w[2],w[3]);
+  and a2(w[5],a[1],w[3]);
+  and a3(w[6],a[0],a[1],w[2]);
+  
+  or o1(gt,w[4],w[5],w[6]);
+  
+  xnor xn1(w[7],a[1],b[1]);
+  xnor xn2(w[8],a[0],b[0]);
+  and a4(et,w[7],w[8]);
+  
+  and a5(w[9],w[1],b[0],w[0]);
+  and a6(w[10],w[0],b[1]);
+  and a7(w[11],b[0],b[1],w[1]);
+  
+  or o3(lt,w[9],w[10],w[11]);
+  
+endmodule
+
+
+// Code your testbench here
+// or browse Examples
+`timescale 1ns/1ps
+
+module two_bitadder_tb;
+
+    reg  [1:0] a, b;
+    wire gt, lt, et;
+
+    // Instantiate the DUT (Device Under Test)
+    two_bitadder uut (
+        .a(a),
+        .b(b),
+        .gt(gt),
+        .lt(lt),
+        .et(et)
+    );
+
+    integer i, j;
+
+    initial begin
+        $display("Time\tA\tB\tGT\tLT\tET");
+        $display("--------------------------------");
+
+        for (i = 0; i < 4; i = i + 1) begin
+            for (j = 0; j < 4; j = j + 1) begin
+                a = i;
+                b = j;
+                #10;
+                $display("%0t\t%b\t%b\t%b\t%b\t%b",
+                         $time, a, b, gt, lt, et);
+            end
+        end
+
+        #10;
+        $finish;
+    end
+
+endmodule
