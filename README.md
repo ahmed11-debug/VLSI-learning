@@ -28,7 +28,15 @@ Four Full Adders chained together to add two 4-bit binary numbers.
 ### 6. BCD Adder
 Built on the 4-bit RCA with correction logic (+6) for values exceeding 9.
 
-*More circuits added as I progress — comparators, multiplexers, flip-flops, counters, FSMs, and beyond.*
+### 7. 2-Bit Comparator
+Compares two 2-bit numbers A and B and produces three outputs.
+- `GT = 1` when A > B
+- `ET = 1` when A = B  
+- `LT = 1` when A < B
+
+Tested with all 16 input combinations using a nested loop testbench.
+
+**More circuits added as I progress — multiplexers, flip flops, counters, FSMs, and beyond.**
 
 ## Tools Used
 - **EDA Playground** — Verilog simulation and testing
